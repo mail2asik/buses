@@ -1,0 +1,42 @@
+{
+	"success": true,
+	"error": false,
+	"errorMessage": "No records found!",
+	"list":[
+		{
+			"service_number" : "100",
+			"direction_name" : "Shenton Way Ter",
+			"stop_code" : "9999",
+			"stop_name" : "Bus stop 9999",
+			"arrival_time" : "10:00:00"
+		},
+		{
+			"service_number" : "100",
+			"direction_name" : "Shenton Way Ter",
+			"stop_code" : "8888",
+			"stop_name" : "Bus stop 8888",
+			"arrival_time" : "10:00:00"
+		},
+		{
+			"service_number" : "100",
+			"direction_name" : "Shenton Way Ter",
+			"stop_code" : "7777",
+			"stop_name" : "Bus stop 7777",
+			"arrival_time" : "10:00:00"
+		},
+		{
+			"service_number" : "100",
+			"direction_name" : "Shenton Way Ter",
+			"stop_code" : "6666",
+			"stop_name" : "Bus stop 6666",
+			"arrival_time" : "10:00:00"
+		},
+		{
+			"service_number" : "100",
+			"direction_name" : "Shenton Way Ter",
+			"stop_code" : "5555",
+			"stop_name" : "Bus stop 5555",
+			"arrival_time" : "10:00:00"
+		}
+	]
+}

@@ -1,0 +1,117 @@
+<section id="bus_services" class="about" ng-controller="busServicesController">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">                    
+
+					<div class="row smpl-step" style="border-bottom: 0; min-width: 500px;">
+						<div class="col-xs-3 smpl-step-step complete" ng-class="{complete:selected.busService, active:steps.step1, disabled:!steps.step1 && !selected.busService}">
+							<div class="text-center smpl-step-num">Step 1</div>
+							<div class="progress">
+								<div class="progress-bar"></div>
+							</div>
+							<a class="smpl-step-icon"><i class="fa fa-bus" style="font-size: 60px; padding-left: 12px; padding-top: 3px; color: black;"></i></a>
+							<div class="smpl-step-info text-center">Select a bus service number.</div>
+						</div>
+
+						<div class="col-xs-3 smpl-step-step" ng-class="{complete:selected.busDirection, active:steps.step2, disabled:!steps.step2 && !selected.busDirection}">           
+							<div class="text-center smpl-step-num">Step 2</div>
+							<div class="progress">
+								<div class="progress-bar"></div>
+							</div>
+							<a class="smpl-step-icon"><i class="fa fa-arrows" style="font-size: 60px; padding-left: 6px; padding-top: 5px; color: black;"></i></a>
+							<div class="smpl-step-info text-center">Choose a direction that you want to go</div>
+						</div>
+						<div class="col-xs-3 smpl-step-step" ng-class="{complete:selected.busStop, active:steps.step3, disabled:!steps.step3 && !selected.busStop}">          
+							<div class="text-center smpl-step-num">Step 3</div>
+							<div class="progress">
+								<div class="progress-bar"></div>
+							</div>
+							<a class="smpl-step-icon"><i class="fa fa-ban" style="font-size: 60px; padding-left: 10px; padding-top: 6px; color: black;opacity: 0.3;"></i></a>
+							<div class="smpl-step-info text-center">Select a Stop Name (or) Stop Number</div>
+						</div>
+						<div class="col-xs-3 smpl-step-step" ng-class="{complete:steps.step4, disabled:!steps.step4}">           
+							<div class="text-center smpl-step-num">Step 4</div>
+							<div class="progress">
+								<div class="progress-bar"></div>
+							</div>
+							<a class="smpl-step-icon"><i class="fa fa-download" style="font-size: 60px; padding-left: 8px; padding-top: 4px; color: black; opacity: 0.3;"></i></a>
+							<div class="smpl-step-info text-center">See the result</div>
+						</div>
+					</div>
+					
+					  
+				<div class="text-center" style="margin:40px 0;">
+				
+				  <div ng-show="loading"><img src="img/loading.gif" /></div>
+				  
+				  <div ng-show="!loading && steps.step1">
+					   <ui-select ng-model="selected.busService" theme="select2" ng-disabled="disabled" style="min-width: 300px;text-align:left;" ng-change="getBusDirections()" ng-if="!data.error">
+						<ui-select-match placeholder="Select a bus service number...">{{$select.selected.service_number}}</ui-select-match>
+						<ui-select-choices repeat="busService in busServices | propsFilter: {service_number: $select.search}">
+						  <div ng-bind-html="busService.service_number | highlight: $select.search"></div>					  
+						</ui-select-choices>
+					  </ui-select>
+					  <div ng-if="data.error" class="error">{{data.errorMessage}}</div>
+				  </div>
+				  
+				  <div ng-show="!loading && steps.step2">
+					   <ui-select ng-model="selected.busDirection" theme="select2" ng-disabled="disabled" style="min-width: 300px;text-align:left;" ng-change="getBusStops()" ng-if="!data.error">
+						<ui-select-match placeholder="Select a direction...">{{$select.selected.direction_name}}</ui-select-match>
+						<ui-select-choices repeat="busDirection in busDirections | propsFilter: {direction_name: $select.search}">
+						  <div ng-bind-html="busDirection.direction_name | highlight: $select.search"></div>					  
+						</ui-select-choices>
+					  </ui-select>
+					  <div ng-if="data.error" class="error">{{data.errorMessage}}</div>
+					  <a ng-click="getBusServiceNumbers()" class="btn btn-block">Go back!</a>
+				  </div>
+				  
+				  <div ng-show="!loading && steps.step3">
+					   <ui-select ng-model="selected.busStop" theme="select2" ng-disabled="disabled" style="min-width: 300px;text-align:left;" ng-change="getBusArrivalTime()" ng-if="!data.error">
+						<ui-select-match placeholder="Select a stop name or number...">{{$select.selected.stop_name}}</ui-select-match>
+						<ui-select-choices repeat="busStop in busStops | propsFilter: {stop_name: $select.search, stop_code: $select.search}">
+						  <div ng-bind-html="busStop.stop_name | highlight: $select.search"></div>	
+						  <small>
+							Stop Number: <span ng-bind-html="''+busStop.stop_code | highlight: $select.search"></span>
+						  </small>
+						</ui-select-choices>
+					  </ui-select>
+					  <div ng-if="data.error" class="error">{{data.errorMessage}}</div>
+					  <a ng-click="getBusServiceNumbers()" class="btn btn-block">Go back!</a>
+				  </div>
+				  
+				  <div ng-show="!loading && steps.step4">
+				    <table class="table table-bordered" style="text-align:left;">
+					  <thead>
+						<tr>
+						  <th>#</th>
+						  <th>Service Number</th>
+						  <th>Direction</th>
+						  <th>Stop Name</th>
+						  <th>Bus arrival time</th>
+						</tr>
+					  </thead>
+					  <tbody>
+						<tr ng-repeat="result in results" ng-class="{active:$even}" ng-if="!data.error">
+						  <td>{{$index+1}}</th>
+						  <td>{{result.service_number}}</td>
+						  <td>{{result.direction_name}}</td>
+						  <td>{{result.stop_name}}</td>
+						  <td>{{result.arrival_time}}</td>
+						</tr>
+						<tr ng-if="data.error">
+							<td colspan="5" class="error">{{data.errorMessage}}</td>
+						</tr>
+					  </tbody>
+				    </table>
+					
+					<a ng-click="getBusServiceNumbers()" class="btn btn-block">Go back!</a>
+				  </div>
+				  
+				 </div>
+
+			</div>
+		</div>
+		<!-- /.row -->
+	</div>
+	<!-- /.container -->
+</section>

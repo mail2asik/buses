@@ -1,0 +1,42 @@
+{
+	"success": true,
+	"error": false,
+	"errorMessage": "No records found!",
+	"list":[
+		{
+			"s_id" : "1",
+			"d_id" : "1",
+			"sn_id" : "1",
+			"stop_code" : "9999",
+			"stop_name" : "Bus stop 9999"
+		},
+		{
+			"s_id" : "2",
+			"d_id" : "1",
+			"sn_id" : "1",
+			"stop_code" : "8888",
+			"stop_name" : "Bus stop 8888"
+		},
+		{
+			"s_id" : "3",
+			"d_id" : "1",
+			"sn_id" : "1",
+			"stop_code" : "7777",
+			"stop_name" : "Bus stop 7777"
+		},
+		{
+			"s_id" : "4",
+			"d_id" : "1",
+			"sn_id" : "1",
+			"stop_code" : "6666",
+			"stop_name" : "Bus stop 6666"
+		},
+		{
+			"s_id" : "5",
+			"d_id" : "1",
+			"sn_id" : "1",
+			"stop_code" : "5555",
+			"stop_name" : "Bus stop 5555"
+		}
+	]
+}
