@@ -23,7 +23,7 @@ busServices.factory('busServicesFactory', ['$http', 'mock', 'mock_base_url', 'ba
         return $http.get(url).success(function(data) { return data; });
       },
 	  getBusArrivalTime: function($sn_id, $d_id, $s_id) {
-		var url = (mock) ? mock_base_url+'bus_stops.json' : base_url+'bus-arrival-time/'+$sn_id+'/'+$d_id+'/'+$s_id;
+		var url = (mock) ? mock_base_url+'bus_arrival_time.json' : base_url+'bus-arrival-time/'+$sn_id+'/'+$d_id+'/'+$s_id;
         return $http.get(url).success(function(data) { return data; });
       }	  
 	}
