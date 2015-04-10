@@ -4,7 +4,34 @@
 var busServices = angular.module('busServices', ['ngSanitize', 'ui.select']);
 busServices.constant('mock', false);
 busServices.constant('mock_base_url', 'partials/mock/');
-busServices.constant('base_url', 'services/api/v1/get/');
+busServices.constant('base_url', 'services/api/v1/');
+busServices.constant('api_key', '670b9d8140edf7d6f4481886f167bf6618b86691');
+
+//Config phases
+busServices.config(['$httpProvider', function($httpProvider) {
+
+    $httpProvider.interceptors.push(function($q, $rootScope) {
+        return {
+            'responseError': function(rejection){
+                var defer = $q.defer();
+
+                if(rejection.status == 401){
+					$rootScope.errro401 = true;
+					$rootScope.errro401Msg = "Unautherized access! Please try again!!";
+                }
+
+                defer.reject(rejection);
+
+                return defer.promise;
+            }
+        };
+    });
+}]);
+
+//Run phase for setting api key for every request
+busServices.run(['$http', 'api_key', function($http, api_key) {
+	$http.defaults.headers.common['X-Authorization'] = api_key;
+}]);
 
 //Factories
 busServices.factory('busServicesFactory', ['$http', 'mock', 'mock_base_url', 'base_url', function($http, mock, mock_base_url, base_url) {
@@ -18,12 +45,12 @@ busServices.factory('busServicesFactory', ['$http', 'mock', 'mock_base_url', 'ba
 		var url = (mock) ? mock_base_url+'bus_directions.json' : base_url+'bus-directions/'+$sn_id;
         return $http.get(url).success(function(data) { return data; });
       },
-	  getBusStops: function($sn_id, $d_id) {
-		var url = (mock) ? mock_base_url+'bus_stops.json' : base_url+'bus-stops/'+$sn_id+'/'+$d_id;
+	  getBusStops: function($snd_id) {
+		var url = (mock) ? mock_base_url+'bus_stops.json' : base_url+'bus-stops/'+$snd_id;
         return $http.get(url).success(function(data) { return data; });
       },
-	  getBusArrivalTime: function($sn_id, $d_id, $s_id) {
-		var url = (mock) ? mock_base_url+'bus_arrival_time.json' : base_url+'bus-arrival-time/'+$sn_id+'/'+$d_id+'/'+$s_id;
+	  getBusArrivalTime: function($s_id) {
+		var url = (mock) ? mock_base_url+'bus_arrival_time.json' : base_url+'bus-arrival-time/'+$s_id;
         return $http.get(url).success(function(data) { return data; });
       }	  
 	}
@@ -83,7 +110,7 @@ busServices.controller('busServicesController', ['$scope', 'busServicesFactory',
 	$scope.getBusStops = function(){
 		$scope.activateStep('step3');
 		$scope.loading = true;
-		busServicesFactory.getBusStops($scope.selected.busService.sn_id, $scope.selected.busDirection.d_id).then(function(result){
+		busServicesFactory.getBusStops($scope.selected.busDirection.snd_id).then(function(result){
 			if (!result.data.error) {
 			  $scope.busStops = result.data.list
 			}else{
@@ -97,7 +124,7 @@ busServices.controller('busServicesController', ['$scope', 'busServicesFactory',
 	$scope.getBusArrivalTime = function(){
 		$scope.activateStep('step4');
 		$scope.loading = true;
-		busServicesFactory.getBusArrivalTime($scope.selected.busService.sn_id, $scope.selected.busDirection.d_id, $scope.selected.busStop.s_id).then(function(result){
+		busServicesFactory.getBusArrivalTime($scope.selected.busStop.s_id).then(function(result){
 			if (!result.data.error) {
 			  $scope.results = result.data.list
 			}else{

@@ -42,7 +42,8 @@
 					  
 				<div class="text-center" style="margin:40px 0;">
 				
-				  <div ng-show="loading"><img src="img/loading.gif" /></div>
+				  <div ng-show="errro401" class="error">{{errro401Msg}}</div>
+				  <div ng-show="loading && !errro401"><img src="img/loading.gif" /></div>
 				  
 				  <div ng-show="!loading && steps.step1">
 					   <ui-select ng-model="selected.busService" theme="select2" ng-disabled="disabled" style="min-width: 300px;text-align:left;" ng-change="getBusDirections()" ng-if="!data.error">
