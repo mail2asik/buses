@@ -1,7 +1,6 @@
 <h2>Installation Steps</h2>
 
-- Download the source code from my github 
-URL: https://github.com/mail2asik/buses
+- Download this source and extract into http server
 
 - Download the dependencies using the following composer command
 composer install (go to this path : buses\services\local & run the command)
